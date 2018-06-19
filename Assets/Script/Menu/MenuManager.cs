@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class MenuManager : MonoBehaviour {
 
 	private MenuScreen actualMenu;
 	public MenuScreen initialMenu;
+	public MenuScreen exitMenu;
 	private void Start() {
 		actualMenu = initialMenu;
 	}
@@ -18,11 +20,26 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void goToPreviousMenu(){
-		swapToMenu(actualMenu.previousMenu);
+		if (exitMenu.gameObject.activeSelf)
+			exitMenu.gameObject.SetActive(false);
+		else swapToMenu(actualMenu.previousMenu);
 	}
 
 	void Update() {
-		if (Input.GetButtonDown("return"))
+		if (Input.GetButtonDown("Cancel"))
 			goToPreviousMenu();	
+	}
+
+	public void exitGame(){
+		Application.Quit();
+	}
+
+	// Will be changed for a pop-up menu api
+	public void showExitMenu(){
+		exitMenu.gameObject.SetActive(true);
+	}
+	
+	public void playGame(){
+		SceneManager.LoadScene(1);
 	}
 }
