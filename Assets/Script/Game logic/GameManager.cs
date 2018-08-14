@@ -19,5 +19,6 @@ public class GameManager : MonoBehaviour {
 		if (instance != null)
 			Debug.Log(" /!\\ Multiple GameManager instances !");
 		instance = this;
+		DontDestroyOnLoad(this);
 	}
 }
