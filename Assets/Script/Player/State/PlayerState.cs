@@ -10,6 +10,7 @@ public abstract class PlayerState {
 	}
 	public virtual void Update (float delta){
 		player.Motion(delta);
+		player.Attack();
 	}
 
 	public virtual void Enter(){}

@@ -74,9 +74,50 @@ public class BasicPlayer : MonoBehaviour {
 
 	void Crouch(){
 		animator.SetBool("crouch", true);
+		ChangeState(new CrouchState(this));
 	}
 
 	void Jump(){
 		animator.SetBool("jump", true);
+	}
+
+	public void Attack(){
+		bool hit = false;
+		string animation;
+		if (Input.GetButtonDown("Heavy normal")){
+			animation = "heavy normal";
+			animator.SetTrigger(animation);
+			hit = true;
+		}
+			
+		if (Input.GetButtonDown("Light normal")){
+			animation = "light normal";
+			animator.SetTrigger(animation);
+			hit = true;
+		}
+			
+		if (Input.GetButtonDown("Anti-air")){
+			animation = "anti-air";
+			animator.SetTrigger(animation);
+			hit = true;
+		}
+			
+		if (Input.GetButtonDown("Over-head")){
+			animation = "over-head";
+			animator.SetTrigger(animation);
+			hit = true;
+		}
+			
+		if (Input.GetButtonDown("Throw")){
+			animation = "throw";
+			animator.SetTrigger(animation);
+			hit = true;
+		}
+		if (hit)
+			ChangeState(new HitState(this));
+	}
+
+	public void SetIdleState(){
+		ChangeState(new NormalState(this));
 	}
 }
