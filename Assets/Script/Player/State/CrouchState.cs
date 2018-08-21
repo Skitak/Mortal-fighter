@@ -12,35 +12,17 @@ public class CrouchState : PlayerState {
     }
 
     public void Attack(){
-        
-		bool isAttacking = player.animator.GetBool("hit");
-		if (isAttacking)
-			return;
-            
-		if (Input.GetButtonDown("Heavy normal")){
-			player.animator.SetBool("crouch heavy normal", true);
-			isAttacking = true;
+		bool hit = false;
+		string[] animations = new string[]{"heavy normal", "light normal", "anti-air", "over-head", "throw"};
+		foreach (string animation in animations){
+			if (Input.GetButtonDown(animation)){
+				player.animator.SetTrigger(animation);
+				hit = true;
+			}
 		}
-
-        if (Input.GetButtonDown("Anti-air")){
-			player.animator.SetBool("anti-air", true);
-			isAttacking = true;
+		if (hit){
+			player.ChangeState(new HitState(player));
+			player.damagingCollider.damages = 10;
 		}
-			
-		if (Input.GetButtonDown("Over-head")){
-			player.animator.SetBool("over-head", true);
-			isAttacking = true;
-		}
-			
-		if (Input.GetButtonDown("Light normal")){
-			player.animator.SetBool("crouch light normal", true);
-			isAttacking = true;
-		}
-			
-		if (Input.GetButtonDown("Throw")){
-			player.animator.SetBool("throw", true);
-			isAttacking = true;
-		}
-		player.animator.SetBool("hit", isAttacking);
     }
 }

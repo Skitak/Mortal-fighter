@@ -9,9 +9,12 @@ public class BasicPlayer : MonoBehaviour {
 	public Slider slider;
 	public Animator animator;
 	public CharacterController controller;
+	public DamagingCollider damagingCollider;
+	public GameObject other;
 	public float speed;
+	public int playerNumber;
 	private int health = 100;
-	public bool isFacingLeft = false;
+	public bool isFacingRight = false;
 	public int Health {
 		get{
 			return health;
@@ -48,8 +51,8 @@ public class BasicPlayer : MonoBehaviour {
 	}
 
 	public void Motion (float delta){
-		float xAxisValue = Input.GetAxis("Horizontal");
-		float yAxisValue = Input.GetAxis("Vertical");
+		float xAxisValue = Input.GetAxis("horizontal " + playerNumber);
+		float yAxisValue = Input.GetAxis("vertical " + playerNumber);
 		if (xAxisValue != 0)
 			Move(delta, xAxisValue);
 		else
@@ -65,11 +68,22 @@ public class BasicPlayer : MonoBehaviour {
 	void Move(float delta, float axisValue){
 		Vector3 movement = new Vector3(axisValue * delta * speed, 0, 0);
 		controller.Move(movement);
-		if (isFacingLeft)
+		if (isFacingRight)
 			animator.SetFloat("move", axisValue * -1);
 		else
 			animator.SetFloat("move", axisValue);
+			// Debug.Log("yo");
+		if (isEnemyBehind()){
+			controller.transform.Rotate(0f,180f,0f);
+			isFacingRight = isFacingRight ? false : true ; 
+			Debug.Log ("returned");
+		}
+	}
 
+	bool isEnemyBehind(){
+		float xPosition = this.transform.position.x;
+		float enemyPosition = other.transform.position.x;
+		return  isFacingRight ? xPosition > enemyPosition : xPosition < enemyPosition;
 	}
 
 	void Crouch(){
@@ -83,38 +97,17 @@ public class BasicPlayer : MonoBehaviour {
 
 	public void Attack(){
 		bool hit = false;
-		string animation;
-		if (Input.GetButtonDown("Heavy normal")){
-			animation = "heavy normal";
-			animator.SetTrigger(animation);
-			hit = true;
+		string[] animations = new string[]{"heavy normal", "light normal", "anti-air", "over-head", "throw"};
+		foreach (string animation in animations){
+			if (Input.GetButtonDown(animation)){
+				animator.SetTrigger(animation);
+				hit = true;
+			}
 		}
-			
-		if (Input.GetButtonDown("Light normal")){
-			animation = "light normal";
-			animator.SetTrigger(animation);
-			hit = true;
-		}
-			
-		if (Input.GetButtonDown("Anti-air")){
-			animation = "anti-air";
-			animator.SetTrigger(animation);
-			hit = true;
-		}
-			
-		if (Input.GetButtonDown("Over-head")){
-			animation = "over-head";
-			animator.SetTrigger(animation);
-			hit = true;
-		}
-			
-		if (Input.GetButtonDown("Throw")){
-			animation = "throw";
-			animator.SetTrigger(animation);
-			hit = true;
-		}
-		if (hit)
+		if (hit){
 			ChangeState(new HitState(this));
+			damagingCollider.damages = 10;
+		}
 	}
 
 	public void SetIdleState(){
