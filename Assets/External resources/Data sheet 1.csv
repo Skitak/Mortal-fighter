@@ -14,7 +14,7 @@ Dash Backward Invulnerability,8,,,,,,,,,,,,
 Core Move Set,,,,,,,,,,,,,
 Move Name,Input,Damage,HitBox Height,HitBox Width,Hit Stun,Block Stun,Frame Advantage Hit,Frame Advantage Block,Hit Level,Startup,Active,Recovery,Total Frame
 Neutral Punch,LN,50,0.2,0.4,13,10,8,5,High&Low,3,4,5,12
-Heavy Kick,HN,100,0.3,0.3,18,7,3,-8,High&Low,7,5,15,27
+Heavy Normal,HN,100,0.3,0.3,18,7,3,-8,High&Low,7,5,15,27
 Anti-Air,AA,120,0.2,0.6,25,10,13,-2,High&Low,4,7,12,23
-Low Kick,Down + HN,120,0.2,0.7,23,20,6,3,Low,11,6,17,34
+Light Normal,Down + HN,120,0.2,0.7,23,20,6,3,Low,11,6,17,34
 Over-Head,OH,80,0.3,0.2,18,5,4,-9,High,9,8,14,31

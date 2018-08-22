@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44571328, g: 0.49542135, b: 0.5742462, a: 1}
+  m_IndirectSpecularColor: {r: 0.4514141, g: 0.5008567, b: 0.57204264, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -194,7 +194,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 51449426}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 2.08}
   m_LocalScale: {x: 3, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -301,13 +301,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 170076733}
-  m_LocalRotation: {x: 0.8665243, y: -0.114357606, z: 0.23218444, w: 0.42678848}
+  m_LocalRotation: {x: 0.28449273, y: 0.09405219, z: 0.19771244, w: 0.9333423}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 127.55701, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 29.595001, y: 19.347, z: 29.077002}
 --- !u!1 &221613668
 GameObject:
   m_ObjectHideFlags: 0
@@ -447,7 +447,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 282840810}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.26, y: 1.63, z: -7.35}
+  m_LocalPosition: {x: -2.26, y: 1.63, z: -3.87}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -565,6 +565,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1030460929}
   damages: 10
+  action: 
 --- !u!65 &375180210
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1616,7 +1617,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4763315839695666, guid: 672ce63c2aee3524f8c2452aec9c99e3, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -2.82
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4763315839695666, guid: 672ce63c2aee3524f8c2452aec9c99e3, type: 2}
       propertyPath: m_LocalRotation.x
@@ -1718,6 +1719,11 @@ Prefab:
       propertyPath: isFacingRight
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114400414420887020, guid: 672ce63c2aee3524f8c2452aec9c99e3,
+        type: 2}
+      propertyPath: cmsTextAsset
+      value: 
+      objectReference: {fileID: 4900000, guid: e68301563ed1ae647a1e93ef3decbf04, type: 3}
     m_RemovedComponents:
     - {fileID: 143588488544470218, guid: 672ce63c2aee3524f8c2452aec9c99e3, type: 2}
     - {fileID: 65796539984778878, guid: 672ce63c2aee3524f8c2452aec9c99e3, type: 2}
@@ -1909,6 +1915,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 781576005}
   damages: 10
+  action: 
 --- !u!1 &2013883503
 GameObject:
   m_ObjectHideFlags: 0
@@ -1990,7 +1997,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4763315839695666, guid: 672ce63c2aee3524f8c2452aec9c99e3, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -1.95
+      value: -2.08
       objectReference: {fileID: 0}
     - target: {fileID: 4763315839695666, guid: 672ce63c2aee3524f8c2452aec9c99e3, type: 2}
       propertyPath: m_LocalPosition.y
@@ -1998,7 +2005,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4763315839695666, guid: 672ce63c2aee3524f8c2452aec9c99e3, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -2.82
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4763315839695666, guid: 672ce63c2aee3524f8c2452aec9c99e3, type: 2}
       propertyPath: m_LocalRotation.x
@@ -2095,6 +2102,15 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 1924161145957270, guid: 672ce63c2aee3524f8c2452aec9c99e3, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114400414420887020, guid: 672ce63c2aee3524f8c2452aec9c99e3,
+        type: 2}
+      propertyPath: cmsTextAsset
+      value: 
+      objectReference: {fileID: 4900000, guid: 0e38399869f3cb64e8dba50057f931f4, type: 3}
     m_RemovedComponents:
     - {fileID: 143588488544470218, guid: 672ce63c2aee3524f8c2452aec9c99e3, type: 2}
     - {fileID: 65796539984778878, guid: 672ce63c2aee3524f8c2452aec9c99e3, type: 2}

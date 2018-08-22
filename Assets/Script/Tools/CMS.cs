@@ -12,12 +12,12 @@ public class CMS {
 	}
 	private TextAsset file;
 	public Dictionary<string, double> movements;
-	public Dictionary<string, Ability> ablilities;
+	public Dictionary<string, Ability> abilities;
 
 	public CMS(TextAsset file){
 		File = file;
 		movements = new Dictionary<string, double>();
-		ablilities = new Dictionary<string, Ability>();
+		abilities = new Dictionary<string, Ability>();
 	}
 
 	public TextAsset File {

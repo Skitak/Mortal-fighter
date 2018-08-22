@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq; 
 
 public class BasicPlayer : MonoBehaviour {
 
@@ -11,10 +12,13 @@ public class BasicPlayer : MonoBehaviour {
 	public CharacterController controller;
 	public DamagingCollider damagingCollider;
 	public GameObject other;
+	public TextAsset cmsTextAsset;
 	public float speed;
 	public int playerNumber;
 	private int health = 100;
 	public bool isFacingRight = false;
+
+	private CMS cmsInfos;
 	public int Health {
 		get{
 			return health;
@@ -34,6 +38,12 @@ public class BasicPlayer : MonoBehaviour {
 	protected void Start () {
 		state = new BeginningState(this);
 		state.Enter();
+		cmsInfos = CSVFileReader.fetchCMSFromFile(cmsTextAsset);
+		double hp;
+		cmsInfos.movements.TryGetValue("health", out hp);
+		Health = Mathf.RoundToInt((float) hp);
+		slider.maxValue = Health;
+		slider.value = Health;
 	}
 	
 	protected void Update () {
@@ -69,21 +79,26 @@ public class BasicPlayer : MonoBehaviour {
 		Vector3 movement = new Vector3(axisValue * delta * speed, 0, 0);
 		controller.Move(movement);
 		if (isFacingRight)
-			animator.SetFloat("move", axisValue * -1);
-		else
-			animator.SetFloat("move", axisValue);
-			// Debug.Log("yo");
-		if (isEnemyBehind()){
+			animator.SetFloat("move", Mathf.Abs(axisValue));
+		if (ShouldPlayerTurn(axisValue)){
 			controller.transform.Rotate(0f,180f,0f);
 			isFacingRight = isFacingRight ? false : true ; 
 			Debug.Log ("returned");
 		}
 	}
 
-	bool isEnemyBehind(){
-		float xPosition = this.transform.position.x;
-		float enemyPosition = other.transform.position.x;
-		return  isFacingRight ? xPosition > enemyPosition : xPosition < enemyPosition;
+	bool ShouldPlayerTurn(float playerDirection){
+		float playerXPosition = this.transform.position.x;
+		float enemyXPosition = other.transform.position.x;
+		return IsEnemyBehind(playerXPosition, enemyXPosition) 
+				&& IsGoingTowardsEnemy(playerXPosition, enemyXPosition, playerDirection); 
+	}
+	bool IsEnemyBehind(float playerXPosition, float enemyXPosition){
+		return  isFacingRight ? playerXPosition > enemyXPosition : playerXPosition < enemyXPosition;
+	}
+
+	bool IsGoingTowardsEnemy(float playerXPosition, float enemyXPosition, float movementDirection){
+		return movementDirection > 0 ? playerXPosition <  enemyXPosition : playerXPosition > enemyXPosition; 
 	}
 
 	void Crouch(){
@@ -97,19 +112,35 @@ public class BasicPlayer : MonoBehaviour {
 
 	public void Attack(){
 		bool hit = false;
-		string[] animations = new string[]{"heavy normal", "light normal", "anti-air", "over-head", "throw"};
-		foreach (string animation in animations){
-			if (Input.GetButtonDown(animation)){
-				animator.SetTrigger(animation);
+		int damages = 10;
+		string actionDone = "none";
+		string[] actions = new string[]{"heavy normal", "light normal"/*, "anti-air", "over-head", "throw"*/};
+		foreach (string action in actions){
+			if (Input.GetButtonDown(action + " " + playerNumber)){
+				damages =  getDamages(action);
+				animator.SetTrigger(action);
 				hit = true;
+				actionDone = action;
 			}
 		}
 		if (hit){
 			ChangeState(new HitState(this));
-			damagingCollider.damages = 10;
+			damagingCollider.damages = damages;
+			damagingCollider.action = actionDone;
 		}
 	}
 
+	int getDamages(string action){
+		CMS.Ability ability;
+		double value;
+		cmsInfos.abilities.TryGetValue(action, out ability);
+		if (ability == null){
+			Debug.Log("Action named " + action + " does not exists in cms file of player " + playerNumber);
+			return 10;
+		}
+		ability.informations.TryGetValue("damage",out value);
+		return Mathf.RoundToInt((float) value); 
+	}
 	public void SetIdleState(){
 		ChangeState(new NormalState(this));
 	}

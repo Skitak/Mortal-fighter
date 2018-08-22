@@ -6,12 +6,13 @@ public class DamagingCollider : MonoBehaviour {
 
 	public GameObject player;
 	public int damages;
+	public string action;
 	private void OnTriggerEnter(Collider other) {
 		// Debug.Log("hit");
 		if (other.gameObject.tag != "Player" || player == other.gameObject)
 			return;
 		other.gameObject.GetComponent<BasicPlayer>().Health -= damages;
-		Debug.Log("hit");
+		Debug.Log("Hit by - " + action + " : " + damages);
 	}
 
 }
