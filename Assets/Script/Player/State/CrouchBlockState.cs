@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GuardState : PlayerState {
+public class CrouchBlockState : PlayerState {
 
 	// Use this for initialization
-	public GuardState (BasicPlayer player) : base(player){}
+	public CrouchBlockState (BasicPlayer player) : base(player){}
 }

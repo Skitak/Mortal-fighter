@@ -22,7 +22,7 @@ public class CrouchState : PlayerState {
 		}
 		if (hit){
 			player.ChangeState(new HitState(player));
-			player.damagingCollider.damages = 10;
+			// player.damagingCollider.damages = 10;
 		}
     }
 }

@@ -7,12 +7,19 @@ using System.Linq;
 public class BasicPlayer : MonoBehaviour {
 
 	private PlayerState state;
-	public Slider slider;
+	public Slider healthSlider;
+	public Slider blockSlider;
 	public Animator animator;
 	public CharacterController controller;
 	public DamagingCollider damagingCollider;
 	public GameObject other;
 	public TextAsset cmsTextAsset;
+	public float maxBlockTime;
+	public float freeBlockTime;
+	public float blockRecoveringBufferTime;
+	public Timer freeBlockTimer;
+	public Timer blockBufferTimer;
+	public Timer blockTimer;
 	public float speed;
 	public int playerNumber;
 	private int health = 100;
@@ -31,7 +38,7 @@ public class BasicPlayer : MonoBehaviour {
 			else {
 				health = value;
 			}
-			slider.value = health;
+			healthSlider.value = health;
 		}
 	}
 	
@@ -42,16 +49,47 @@ public class BasicPlayer : MonoBehaviour {
 		double hp;
 		cmsInfos.movements.TryGetValue("health", out hp);
 		Health = Mathf.RoundToInt((float) hp);
-		slider.maxValue = Health;
-		slider.value = Health;
+		healthSlider.maxValue = Health;
+		healthSlider.value = Health;
+
+		SetupTimers();
+	}
+
+	void SetupTimers(){
+		blockBufferTimer = new Timer(blockRecoveringBufferTime, delegate (){
+			blockTimer.IsReversed = true;
+			blockTimer.Play();
+			// Debug.Log("Blocking bar is recharging");
+		});
+
+		blockTimer = new Timer(maxBlockTime, delegate(){
+			// Debug.Log("Blocking bar is empty");
+			this.ChangeState(new NormalState(this));
+		});
+
+		blockTimer.OnTimerUpdate += delegate () {
+			blockSlider.value = blockTimer.GetPercentageLeft() ;
+			// Debug.Log(blockTimer.Time);
+		};
+		
+		freeBlockTimer = new Timer(freeBlockTime, delegate(){
+			blockTimer.IsReversed = false;
+			// Debug.Log("Free blocking bar is empty");
+			blockTimer.Play();
+		});
 	}
 	
 	protected void Update () {
 		state.Update(Time.deltaTime);
 	}
 
-	protected void Hit(int damages, float hitStun){
-		state.Hit(damages, hitStun);
+	public void Hit(int damages, int hitStun, string action){
+		state.Hit(damages, hitStun, action);
+	}
+
+	public void Damaged(int damages, int hitStun){
+		Health -= damages;
+		ChangeState(new HitStunState(this, hitStun));
 	}
 
 	public void ChangeState(PlayerState newState){
@@ -88,16 +126,17 @@ public class BasicPlayer : MonoBehaviour {
 	}
 
 	bool ShouldPlayerTurn(float playerDirection){
+		return IsEnemyBehind() && IsGoingTowardsEnemy(playerDirection); 
+	}
+	public bool IsEnemyBehind(){
 		float playerXPosition = this.transform.position.x;
 		float enemyXPosition = other.transform.position.x;
-		return IsEnemyBehind(playerXPosition, enemyXPosition) 
-				&& IsGoingTowardsEnemy(playerXPosition, enemyXPosition, playerDirection); 
-	}
-	bool IsEnemyBehind(float playerXPosition, float enemyXPosition){
 		return  isFacingRight ? playerXPosition > enemyXPosition : playerXPosition < enemyXPosition;
 	}
 
-	bool IsGoingTowardsEnemy(float playerXPosition, float enemyXPosition, float movementDirection){
+	bool IsGoingTowardsEnemy(float movementDirection){
+		float playerXPosition = this.transform.position.x;
+		float enemyXPosition = other.transform.position.x;
 		return movementDirection > 0 ? playerXPosition <  enemyXPosition : playerXPosition > enemyXPosition; 
 	}
 
@@ -110,14 +149,14 @@ public class BasicPlayer : MonoBehaviour {
 		animator.SetBool("jump", true);
 	}
 
-	public void Attack(){
+	public void Ability(){
 		bool hit = false;
-		int damages = 10;
+		CMS.Ability abilityInformations = null;
 		string actionDone = "none";
 		string[] actions = new string[]{"heavy normal", "light normal"/*, "anti-air", "over-head", "throw"*/};
 		foreach (string action in actions){
 			if (Input.GetButtonDown(action + " " + playerNumber)){
-				damages =  getDamages(action);
+				abilityInformations=  GetAbilityInformations(action);
 				animator.SetTrigger(action);
 				hit = true;
 				actionDone = action;
@@ -125,12 +164,26 @@ public class BasicPlayer : MonoBehaviour {
 		}
 		if (hit){
 			ChangeState(new HitState(this));
-			damagingCollider.damages = damages;
+			damagingCollider.AbilityInformations = abilityInformations;
 			damagingCollider.action = actionDone;
+		}
+
+		if (Input.GetButtonDown("block " + playerNumber) && !blockTimer.IsFinished()){
+			ChangeState(new BlockState(this));
 		}
 	}
 
-	int getDamages(string action){
+	CMS.Ability GetAbilityInformations(string action){
+		CMS.Ability ability;
+		cmsInfos.abilities.TryGetValue(action, out ability);
+		if (ability == null){
+			Debug.Log("Action named " + action + " does not exists in cms file of player " + playerNumber);
+			return new CMS.Ability();
+		}
+		return ability;
+	}
+
+	int getHitStunFrames(string action){
 		CMS.Ability ability;
 		double value;
 		cmsInfos.abilities.TryGetValue(action, out ability);
@@ -144,4 +197,5 @@ public class BasicPlayer : MonoBehaviour {
 	public void SetIdleState(){
 		ChangeState(new NormalState(this));
 	}
+	
 }

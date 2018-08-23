@@ -10,15 +10,14 @@ public abstract class PlayerState {
 	}
 	public virtual void Update (float delta){
 		player.Motion(delta);
-		player.Attack();
+		player.Ability();
 	}
 
 	public virtual void Enter(){}
 
 	public virtual void Exit(){}
 
-	public virtual void Hit(int damages, float hitStun){
-		player.Health -= damages;
-		player.ChangeState(new HitStunState(player));
+	public virtual void Hit(int damages, int hitStun, string action){
+		player.Damaged(damages, hitStun);
 	}
 }

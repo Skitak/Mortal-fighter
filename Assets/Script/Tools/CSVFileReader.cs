@@ -28,13 +28,13 @@ public class CSVFileReader : MonoBehaviour
 	private static void fetchCMSMovements(CMS cms){
 		string[] lines = cms.File.text.Split("\n"[0]);
 		string[] ignoredLines = {"jump frames total","dash forward total frames" };
-		Debug.Log("Récupération des variables de mouvement --------------------------------");
+		// Debug.Log("Récupération des variables de mouvement --------------------------------");
 		for (int i = 1; i <= 12; ++i)
 		{
 			string[] row = SplitCsvLine( lines[i].ToLower() );
 			if (!ignoredLines.Contains(row[0])){
 				cms.movements.Add(row[0],double.Parse(row[1]));
-				Debug.Log(row[0] + " : " + row[1]); 
+				// Debug.Log(row[0] + " : " + row[1]); 
 			}
 		}
 	}
@@ -45,10 +45,10 @@ public class CSVFileReader : MonoBehaviour
 		string[] ignoredAbilities = {"total frame","input", "hit level" };
 		string[] row = SplitCsvLine( lines[14] );
 		string[] abilitiesInfos = new string[row.Length - 1];
-		Debug.Log("Récupération des variables de combat ----------------------------");
+		// Debug.Log("Récupération des variables de combat ----------------------------");
 		for (int i = 1; i < row.Length - 1; ++i) {
 				abilitiesInfos[i] = row[i].ToLower();
-				Debug.Log(abilitiesInfos[i]);
+				// Debug.Log(abilitiesInfos[i]);
 		}
 		for (int i = 15; i < lines.Length; ++i) {
 			row = SplitCsvLine( lines[i].ToLower() );
@@ -59,11 +59,11 @@ public class CSVFileReader : MonoBehaviour
 				}
 			}
 			cms.abilities.Add(row[0], ability);
-			Debug.Log(ability.informations.ToString());
+			// Debug.Log(ability.informations.ToString());
 		}
 
 		for (int i = 0; i < cms.abilities.Count; ++i){
-			Debug.Log(cms.abilities.Keys.ElementAt(i));
+			// Debug.Log(cms.abilities.Keys.ElementAt(i));
 			// Debug.Log(cms.abilities[cms.abilities.Keys.ElementAt(i)]);
 		}
 	}
