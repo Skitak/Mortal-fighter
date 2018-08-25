@@ -102,7 +102,6 @@ public class Timer {
 				OnTimerUpdate();
 			Time = isReversed ? Time - delta : Time + delta;
 		}
-
 	}
 
 	public float EndTime{
@@ -117,6 +116,7 @@ public class Timer {
 		get{ return isReversed; }
 		set{ isReversed = value; }
 	}
+
 	public float Time {
 		get {
 			return time;
@@ -133,7 +133,6 @@ public class Timer {
 					time = 0;
 					state = TimerState.PAUSED;
 				}
-					
 				else
 					time = value;
 			}

@@ -9,7 +9,15 @@ public class HitStunState : PlayerState {
 		stunLeft = hitstun;
 	}
 
-	public override void Update(float delta) {
+	public override void Enter(){
+		player.animator.SetBool("damaged", true);
+	}
+
+	public override void Exit(){
+		player.animator.SetBool("damaged", false);
+	}
+
+	public override void Update() {
 		if (--stunLeft == 0){
 			player.ChangeState(new NormalState(player));
 		}

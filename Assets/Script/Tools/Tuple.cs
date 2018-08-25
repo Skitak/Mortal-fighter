@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Tuple<T, U>  {
 
-	public T fisrt;
+	public T first;
 	public U second;
 
 	public Tuple(T first,U second){
-		this.fisrt = first;
+		this.first = first;
 		this.second = second;
 	}
 

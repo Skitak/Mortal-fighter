@@ -5,8 +5,10 @@ using UnityEngine;
 public class CMS {
 
 	public class Ability {
+		public string name;
 		public Dictionary<string, double> informations;
-		public Ability(){
+		public Ability(string name){
+			this.name = name;
 			informations = new Dictionary<string, double>();
 		}
 	}

@@ -4,7 +4,7 @@ Forward Walk Speed,1,,,,,,,,,,,,
 Backward Walk Speed,0.75,,,,,,,,,,,,
 Jump Height Apex,1.75,,,,,,,,,,,,
 Jump Startup Frames,5,,,,,,,,,,,,
-Jump Frames Total,35 (5 + 30),,,,,,,,,,,,
+Jump Frames Total,35,,,,,,,,,,,,
 Dash Forward Total Frames,15,,,,,,,,,,,,
 Dash Forward Distance,2,,,,,,,,,,,,
 Dash Backward Total Frames,25,,,,,,,,,,,,
@@ -13,8 +13,9 @@ Dash Backward Recovery,5,,,,,,,,,,,,
 Dash Backward Invulnerability,8,,,,,,,,,,,,
 Core Move Set,,,,,,,,,,,,,
 Move Name,Input,Damage,HitBox Height,HitBox Width,Hit Stun,Block Stun,Frame Advantage Hit,Frame Advantage Block,Hit Level,Startup,Active,Recovery,Total Frame
-Neutral Punch,LN,50,0.2,0.4,13,10,8,5,High&Low,3,4,5,12
+Throw,LN,50,0.2,0.4,13,10,8,5,High&Low,3,4,5,12
 Heavy Normal,HN,100,0.3,0.3,18,7,3,-8,High&Low,7,5,15,27
 Anti-Air,AA,120,0.2,0.6,25,10,13,-2,High&Low,4,7,12,23
-Light Normal,Down + HN,120,0.2,0.7,23,20,6,3,Low,11,6,17,34
+Light Normal,Down + HN,50,0.2,0.7,23,20,6,3,Low,11,6,17,12
 Over-Head,OH,80,0.3,0.2,18,5,4,-9,High,9,8,14,31
+nothing,OH,80,0.3,0.2,18,5,4,-9,High,9,8,14,31

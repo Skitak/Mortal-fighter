@@ -26,33 +26,25 @@ public class BasicPlayer : MonoBehaviour {
 	public bool isFacingRight = false;
 
 	private CMS cmsInfos;
-	public int Health {
-		get{
-			return health;
-		}
-		set {
-			if (value < 0){
-				health = 0;
-				ChangeState(new DeadState(this));
-			}
-			else {
-				health = value;
-			}
-			healthSlider.value = health;
-		}
+	public CMS CmsInfos {
+		get { return cmsInfos;}
 	}
 	
 	protected void Start () {
-		state = new BeginningState(this);
+		state = new NormalState(this);
 		state.Enter();
+		FetchPlayerInformations();
+		SetupTimers();
+	}
+
+	void FetchPlayerInformations(){
 		cmsInfos = CSVFileReader.fetchCMSFromFile(cmsTextAsset);
 		double hp;
 		cmsInfos.movements.TryGetValue("health", out hp);
-		Health = Mathf.RoundToInt((float) hp);
-		healthSlider.maxValue = Health;
-		healthSlider.value = Health;
-
-		SetupTimers();
+		health = Mathf.RoundToInt((float) hp);
+		healthSlider.maxValue = health;
+		healthSlider.value = health;
+		// There is a lot more informations to fetch here such as speed, height, etc..
 	}
 
 	void SetupTimers(){
@@ -63,13 +55,13 @@ public class BasicPlayer : MonoBehaviour {
 		});
 
 		blockTimer = new Timer(maxBlockTime, delegate(){
-			// Debug.Log("Blocking bar is empty");
+			Debug.Log("Blocking bar is empty");
+			Debug.Log(blockTimer.IsFinished());
 			this.ChangeState(new NormalState(this));
 		});
 
 		blockTimer.OnTimerUpdate += delegate () {
 			blockSlider.value = blockTimer.GetPercentageLeft() ;
-			// Debug.Log(blockTimer.Time);
 		};
 		
 		freeBlockTimer = new Timer(freeBlockTime, delegate(){
@@ -80,7 +72,7 @@ public class BasicPlayer : MonoBehaviour {
 	}
 	
 	protected void Update () {
-		state.Update(Time.deltaTime);
+		state.Update();
 	}
 
 	public void Hit(int damages, int hitStun, string action){
@@ -88,8 +80,16 @@ public class BasicPlayer : MonoBehaviour {
 	}
 
 	public void Damaged(int damages, int hitStun){
-		Health -= damages;
-		ChangeState(new HitStunState(this, hitStun));
+		health -= damages;
+		if (health <= 0){
+			health = 0;
+			ChangeState(new DeadState(this));
+		}
+		else {
+			ChangeState(new HitStunState(this, hitStun));
+		}
+		healthSlider.value = health;
+
 	}
 
 	public void ChangeState(PlayerState newState){
@@ -98,11 +98,11 @@ public class BasicPlayer : MonoBehaviour {
 		newState.Enter();
 	}
 
-	public void Motion (float delta){
+	public void Motion (){
 		float xAxisValue = Input.GetAxis("horizontal " + playerNumber);
 		float yAxisValue = Input.GetAxis("vertical " + playerNumber);
 		if (xAxisValue != 0)
-			Move(delta, xAxisValue);
+			Move(xAxisValue);
 		else
 			animator.SetFloat("move", 0f);
 		if (yAxisValue > 0)
@@ -113,8 +113,8 @@ public class BasicPlayer : MonoBehaviour {
 			animator.SetBool("crouch", false);
 	}
 
-	void Move(float delta, float axisValue){
-		Vector3 movement = new Vector3(axisValue * delta * speed, 0, 0);
+	void Move(float axisValue){
+		Vector3 movement = new Vector3(axisValue * Time.deltaTime * speed, 0, 0);
 		controller.Move(movement);
 		if (isFacingRight)
 			animator.SetFloat("move", Mathf.Abs(axisValue));
@@ -146,42 +146,10 @@ public class BasicPlayer : MonoBehaviour {
 	}
 
 	void Jump(){
-		animator.SetBool("jump", true);
+		ChangeState(new JumpState(this));
 	}
 
-	public void Ability(){
-		bool hit = false;
-		CMS.Ability abilityInformations = null;
-		string actionDone = "none";
-		string[] actions = new string[]{"heavy normal", "light normal"/*, "anti-air", "over-head", "throw"*/};
-		foreach (string action in actions){
-			if (Input.GetButtonDown(action + " " + playerNumber)){
-				abilityInformations=  GetAbilityInformations(action);
-				animator.SetTrigger(action);
-				hit = true;
-				actionDone = action;
-			}
-		}
-		if (hit){
-			ChangeState(new HitState(this));
-			damagingCollider.AbilityInformations = abilityInformations;
-			damagingCollider.action = actionDone;
-		}
-
-		if (Input.GetButtonDown("block " + playerNumber) && !blockTimer.IsFinished()){
-			ChangeState(new BlockState(this));
-		}
-	}
-
-	CMS.Ability GetAbilityInformations(string action){
-		CMS.Ability ability;
-		cmsInfos.abilities.TryGetValue(action, out ability);
-		if (ability == null){
-			Debug.Log("Action named " + action + " does not exists in cms file of player " + playerNumber);
-			return new CMS.Ability();
-		}
-		return ability;
-	}
+	
 
 	int getHitStunFrames(string action){
 		CMS.Ability ability;
@@ -193,9 +161,6 @@ public class BasicPlayer : MonoBehaviour {
 		}
 		ability.informations.TryGetValue("damage",out value);
 		return Mathf.RoundToInt((float) value); 
-	}
-	public void SetIdleState(){
-		ChangeState(new NormalState(this));
 	}
 	
 }

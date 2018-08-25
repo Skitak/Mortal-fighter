@@ -230,7 +230,39 @@ InputManager:
     axis: 1
     joyNum: 0
   - serializedVersion: 3
-    m_Name: anti-air
+    m_Name: block 1
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: '[6]'
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 1
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: block 2
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: p
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 1
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: anti-air 1
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
@@ -246,7 +278,23 @@ InputManager:
     axis: 1
     joyNum: 0
   - serializedVersion: 3
-    m_Name: over-head
+    m_Name: anti-air 2
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: k
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 1
+    type: 0
+    axis: 1
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: over-head 1
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
@@ -262,11 +310,43 @@ InputManager:
     axis: 1
     joyNum: 0
   - serializedVersion: 3
-    m_Name: throw
+    m_Name: over-head 2
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: l
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 1
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: throw 1
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: '[3]'
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 1
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: throw 2
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: m
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
