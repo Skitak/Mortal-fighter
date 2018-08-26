@@ -3,32 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class JumpState : PlayerState {
- 	Vector3 moveDirection = Vector3.zero;
 	int frameStartup, frameTotal;
 	float apex;
-	float gravity = 30.0f;
+	InAirInfos inAirInfos;
  	public override void Update() {
-     	player.controller.Move(Vector3.up * Time.deltaTime);
-		moveDirection.y -= gravity * Time.deltaTime;
-		player.controller.Move(moveDirection* Time.deltaTime);
-		if (player.controller.isGrounded)
-			player.ChangeState(new NormalState(player));
+		if (--frameStartup == 0){
+			player.animator.SetBool("grounded", false);
+			player.ChangeState(new InAirState(player, inAirInfos));
+		}
  	}
 
 	public JumpState (BasicPlayer player) : base(player){
-		// First is the name, second is the input
-		availableActions = new Tuple<string,string>[]{
-			new Tuple<string, string>("heavy normal mid-air","heavy normal"),
-			new Tuple<string, string>("light normal mid-air","light normal"),
-			new Tuple<string, string>("throw mid-air","throw")
-		};
 	}
 
 	public override void Enter(){
-		player.animator.SetBool("grounded", false);
 		FetchCMSInformations();
 		float direction = Input.GetAxis("horizontal " + player.playerNumber);
-		moveDirection = new Vector3(direction * player.speed, apex, 0);
+		Vector3 moveDirection = new Vector3(direction * player.speed, apex, 0);
+		inAirInfos = new InAirInfos(moveDirection, true);
+		player.animator.SetTrigger("jump");
 	}
 
 	private void FetchCMSInformations(){
@@ -41,7 +34,7 @@ public class JumpState : PlayerState {
 		frameStartup = Mathf.RoundToInt((float) value);
 		player.CmsInfos.movements.TryGetValue("jump frames total", out value);
 		frameTotal = Mathf.RoundToInt((float) value);
-	}
+	}	
 
 	public override void Exit(){
 

@@ -19,7 +19,13 @@ public abstract class PlayerState {
 	public virtual void Exit(){}
 
 	public virtual void Hit(int damages, int hitStun, string action){
-		player.Damaged(damages, hitStun);
+		Damaged(damages, hitStun);
+	}
+
+	public virtual void Damaged(int damages, int hitStun){
+		player.Health -= damages;
+		if (player.Health > 0)
+			player.ChangeState(new HitStunState(player, hitStun));
 	}
 
 	protected void Ability(){

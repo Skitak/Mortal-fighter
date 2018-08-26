@@ -22,7 +22,19 @@ public class BasicPlayer : MonoBehaviour {
 	public Timer blockTimer;
 	public float speed;
 	public int playerNumber;
-	private int health = 100;
+	private int health;
+	public int Health{
+		get{return health;}
+		set{
+			if (value <= 0){
+				health = 0;
+				ChangeState(new DeadState(this));
+			}
+			else 
+				health = value;
+			healthSlider.value = health;
+		}
+	}
 	public bool isFacingRight = false;
 
 	private CMS cmsInfos;
@@ -80,16 +92,7 @@ public class BasicPlayer : MonoBehaviour {
 	}
 
 	public void Damaged(int damages, int hitStun){
-		health -= damages;
-		if (health <= 0){
-			health = 0;
-			ChangeState(new DeadState(this));
-		}
-		else {
-			ChangeState(new HitStunState(this, hitStun));
-		}
-		healthSlider.value = health;
-
+		state.Damaged(damages, hitStun);
 	}
 
 	public void ChangeState(PlayerState newState){
@@ -120,8 +123,7 @@ public class BasicPlayer : MonoBehaviour {
 			animator.SetFloat("move", Mathf.Abs(axisValue));
 		if (ShouldPlayerTurn(axisValue)){
 			controller.transform.Rotate(0f,180f,0f);
-			isFacingRight = isFacingRight ? false : true ; 
-			Debug.Log ("returned");
+			isFacingRight = isFacingRight ? false : true ;
 		}
 	}
 

@@ -15,5 +15,6 @@ public class NormalState : PlayerState {
 			new Tuple<string, string>("anti-air","anti-air"),
 			new Tuple<string, string>("over-head","over-head"),
 		};
+		player.animator.SetBool("grounded", true);
 	}
 }

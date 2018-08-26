@@ -43,7 +43,7 @@ public class DamagingCollider : MonoBehaviour {
 			other.gameObject.GetComponent<DamagingCollider>().Hit(damages,hitStun, action);	
 		else if (other.tag == "blockingHitbox") // should call some other function
 			other.gameObject.GetComponent<BasicPlayer>().Hit(damages,hitStun, action);
-		else
+		else if (other.tag == "Player")
 			other.gameObject.GetComponent<BasicPlayer>().Hit(damages,hitStun, action);
 
 	}
