@@ -19,11 +19,6 @@ public class BlockState : PlayerState {
 		};
 	}
 
-	public override void Update (){
-		Move();
-		Abilities();
-	}
-
 	public override void Enter(){
 		if (isAlreadyBlocking){
 			isAlreadyBlocking = false;
@@ -53,18 +48,6 @@ public class BlockState : PlayerState {
 			player.blockTimer.Pause();
 		player.blockBufferTimer.Play();
 	}
-	protected virtual void Move(){
-		float Yaxis = Input.GetAxis("vertical " + player.playerNumber);
-		if (Yaxis < 0){
-			isAlreadyBlocking = true;
-			player.ChangeState(new CrouchBlockState(player));
-		}
-	}
-
-	protected virtual void Abilities(){
-		if (Input.GetButtonUp("block " + player.playerNumber))
-			player.ChangeState(new NormalState(player));
-	}
 
 	public override void Hit(int damages, int hitStun, string action){
 		if (player.IsEnemyBehind() ||  !ignoredActions.Contains(action)){
@@ -74,4 +57,14 @@ public class BlockState : PlayerState {
 			Debug.Log("Blocked mathafaka");
 		}
 	}
+
+	public override void Crouch(){
+		isAlreadyBlocking = true;
+		player.ChangeState(new CrouchBlockState(player));
+	}
+
+	public override void Unblock(){
+		player.ChangeState(new NormalState(player));
+	}
+
 }

@@ -30,18 +30,13 @@ public class CrouchBlockState : BlockState {
 		player.animator.SetBool("block", false);
 		SetExitTimers();
 	}
-	
 
-	protected override void Move(){
-		float Yaxis = Input.GetAxis("vertical " + player.playerNumber);
-		if (Yaxis >= 0){
-			isAlreadyBlocking = true;
-			player.ChangeState(new BlockState(player));
-		}
+	public override void Stand(){
+		isAlreadyBlocking = true;
+		player.ChangeState(new BlockState(player));
 	}
 
-	protected override void Abilities(){
-		if (Input.GetButtonUp("block " + player.playerNumber))
-			player.ChangeState(new CrouchState(player));
+	public override void Unblock(){
+		player.ChangeState(new CrouchState(player));
 	}
 }

@@ -4,17 +4,41 @@ using UnityEngine;
 
 public class NormalState : PlayerState {
 
-	public NormalState (BasicPlayer player) : base(player){}
+	public NormalState (BasicPlayer player) : base(player){
+		// First is the input, second is the animation's name
+		availableActions = new Dictionary<string, string>(){
+			{"heavy normal", "heavy normal standing"},
+			{"light normal", "light normal standing"},
+			{"throw", "throw standing"},
+			{"anti-air", "anti-air"},
+			{"over-head", "over-head"},
+		};}
 
 	public override void Enter(){
-		// First is the name, second is the input
-		availableActions = new Tuple<string,string>[]{
-			new Tuple<string, string>("heavy normal standing","heavy normal"),
-			new Tuple<string, string>("light normal standing","light normal"),
-			new Tuple<string, string>("throw standing","throw"),
-			new Tuple<string, string>("anti-air","anti-air"),
-			new Tuple<string, string>("over-head","over-head"),
-		};
 		player.animator.SetBool("grounded", true);
+	}
+
+	public override void Move(float axisValue){
+		Vector3 movement = new Vector3(axisValue * Time.deltaTime * player.speed, 0, 0);
+		player.controller.Move(movement);
+		if (player.isFacingRight)
+			player.animator.SetFloat("move", Mathf.Abs(axisValue));
+		if (player.ShouldTurn(axisValue)){
+			player.controller.transform.Rotate(0f,180f,0f);
+			player.isFacingRight = player.isFacingRight ? false : true ;
+		}
+	}
+	public override void Block(){
+		if (!player.blockTimer.IsFinished()){
+			player.ChangeState(new BlockState(player));
+		}
+	}
+	public override void Crouch(){
+		player.animator.SetBool("crouch", true);
+		player.ChangeState(new CrouchState(player));
+	}
+
+	public override void Jump(float direction){
+		player.ChangeState(new JumpState(player, direction));
 	}
 }

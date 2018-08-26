@@ -5,29 +5,24 @@ using System.Linq;
 
 public class DamagingCollider : MonoBehaviour {
 
-	Dictionary<string, int> priorities = new Dictionary<string, int>();
-	Dictionary<string, string[]> prioritiesExceptions = new Dictionary<string, string[]>();
+	Dictionary<string, int> priorities = new Dictionary<string, int>() {
+		{"throw standing", 1},
+		{"throw mid-air", 2},
+		{"anti-air", 3},
+		{"heavy normal standing", 4},
+		{"heavy normal crouching", 4},
+		{"over-head", 5},
+		{"light normal standing", 6},
+		{"light normal crouching", 6},
+		{"heavy normal mid-air", 7},
+		{"light normal mid-air", 8}
+	};
+	Dictionary<string, string[]> prioritiesExceptions = new Dictionary<string, string[]>(){
+		{"anti-air", new string[]{ "heavy normal mid-air", "light normal mid-air"}} 
+	};
 	string[] canceledMoves = new string[] {
 		"throw standing", "throw mimd-air"
 	};
-
-	private void Start() {
-		AddActionPriorities();
-		AddActionPrioritiesExceptions();	
-	}
-
-	void AddActionPriorities(){
-		priorities.Add("throw standing", 1);
-		priorities.Add("throw mid-air", 2);
-		priorities.Add("anti-air", 3);
-		priorities.Add("heavy normal standing", 4);
-		priorities.Add("heavy normal crouching", 4);
-		priorities.Add("over-head", 5);
-		priorities.Add("light normal standing", 6);
-		priorities.Add("light normal crouching", 6);
-		priorities.Add("heavy normal mid-air", 7);
-		priorities.Add("light normal mid-air", 8);
-	}
 	void AddActionPrioritiesExceptions(){
 		prioritiesExceptions.Add("anti-air", 
 		new string[]{ "heavy normal mid-air", "light normal mid-air"});		
@@ -74,8 +69,7 @@ public class DamagingCollider : MonoBehaviour {
 	}
 
 	private bool HasPriorityWithException(string hisAction){
-		string[] linkedExceptions;
-		prioritiesExceptions.TryGetValue(hisAction, out linkedExceptions);
+		string[] linkedExceptions = prioritiesExceptions[hisAction];
 		if (linkedExceptions != null && linkedExceptions.Contains(action))
 			return true;
 		return false;

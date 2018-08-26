@@ -21,7 +21,6 @@ public class BasicPlayer : MonoBehaviour {
 	public Timer blockBufferTimer;
 	public Timer blockTimer;
 	public float speed;
-	public int playerNumber;
 	private int health;
 	public int Health{
 		get{return health;}
@@ -83,51 +82,25 @@ public class BasicPlayer : MonoBehaviour {
 		});
 	}
 	
-	protected void Update () {
-		state.Update();
-	}
 
-	public void Hit(int damages, int hitStun, string action){
-		state.Hit(damages, hitStun, action);
-	}
-
-	public void Damaged(int damages, int hitStun){
-		state.Damaged(damages, hitStun);
-	}
-
+	public void Hit(int damages, int hitStun, string action){ state.Hit(damages, hitStun, action); }
+	public void Damaged(int damages, int hitStun){ state.Damaged(damages, hitStun);	}
+	protected void Update () { state.Update();
+	Debug.Log(controller.velocity); }
+	public void Attack(string action){ state.Attack(action); }
+	public void Block(){ state.Block(); }
+	public void Unblock(){ state.Unblock(); }
+	public void Move(float axisValue){ state.Move(axisValue); }
+	public void Crouch(){ state.Crouch(); }
+	public void Stand(){ state.Stand();	}
+	public void Jump(float direction){	state.Jump(direction); }
 	public void ChangeState(PlayerState newState){
 		state.Exit();
 		state = newState;
 		newState.Enter();
 	}
 
-	public void Motion (){
-		float xAxisValue = Input.GetAxis("horizontal " + playerNumber);
-		float yAxisValue = Input.GetAxis("vertical " + playerNumber);
-		if (xAxisValue != 0)
-			Move(xAxisValue);
-		else
-			animator.SetFloat("move", 0f);
-		if (yAxisValue > 0)
-			Jump();
-		else if (yAxisValue < 0)
-			Crouch();
-		else 
-			animator.SetBool("crouch", false);
-	}
-
-	void Move(float axisValue){
-		Vector3 movement = new Vector3(axisValue * Time.deltaTime * speed, 0, 0);
-		controller.Move(movement);
-		if (isFacingRight)
-			animator.SetFloat("move", Mathf.Abs(axisValue));
-		if (ShouldPlayerTurn(axisValue)){
-			controller.transform.Rotate(0f,180f,0f);
-			isFacingRight = isFacingRight ? false : true ;
-		}
-	}
-
-	bool ShouldPlayerTurn(float playerDirection){
+	public bool ShouldTurn(float playerDirection){
 		return IsEnemyBehind() && IsGoingTowardsEnemy(playerDirection); 
 	}
 	public bool IsEnemyBehind(){
@@ -142,23 +115,12 @@ public class BasicPlayer : MonoBehaviour {
 		return movementDirection > 0 ? playerXPosition <  enemyXPosition : playerXPosition > enemyXPosition; 
 	}
 
-	void Crouch(){
-		animator.SetBool("crouch", true);
-		ChangeState(new CrouchState(this));
-	}
-
-	void Jump(){
-		ChangeState(new JumpState(this));
-	}
-
-	
-
 	int getHitStunFrames(string action){
 		CMS.Ability ability;
 		double value;
 		cmsInfos.abilities.TryGetValue(action, out ability);
 		if (ability == null){
-			Debug.Log("Action named " + action + " does not exists in cms file of player " + playerNumber);
+			Debug.Log("Action named " + action + " does not exists in cms file.");
 			return 10;
 		}
 		ability.informations.TryGetValue("damage",out value);

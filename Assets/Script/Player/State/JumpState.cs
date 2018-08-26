@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class JumpState : PlayerState {
 	int frameStartup, frameTotal;
-	float apex;
+	float apex, direction;
 	InAirInfos inAirInfos;
  	public override void Update() {
 		if (--frameStartup == 0){
@@ -13,12 +13,12 @@ public class JumpState : PlayerState {
 		}
  	}
 
-	public JumpState (BasicPlayer player) : base(player){
+	public JumpState (BasicPlayer player, float direction) : base(player){
+		this.direction = direction;
 	}
 
 	public override void Enter(){
 		FetchCMSInformations();
-		float direction = Input.GetAxis("horizontal " + player.playerNumber);
 		Vector3 moveDirection = new Vector3(direction * player.speed, apex, 0);
 		inAirInfos = new InAirInfos(moveDirection, true);
 		player.animator.SetTrigger("jump");

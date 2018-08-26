@@ -8,10 +8,10 @@ public class InAirState : PlayerState {
 
 	public InAirState (BasicPlayer player, InAirInfos inAirInfos) : base(player){
 		// First is the name, second is the input
-		availableActions = new Tuple<string,string>[]{
-			new Tuple<string, string>("heavy normal mid-air","heavy normal"),
-			new Tuple<string, string>("light normal mid-air","light normal"),
-			new Tuple<string, string>("throw mid-air","throw")
+		availableActions = new Dictionary<string, string>(){
+			{"heavy normal", "heavy normal mid-air"},
+			{"light normal", "light normal mid-air"},
+			{"throw", "throw mid-air"}
 		};
 
 		this.inAirInfos = inAirInfos;
@@ -35,6 +35,16 @@ public class InAirState : PlayerState {
 		if (player.Health > 0)
 			player.ChangeState(new FallingState(player, inAirInfos));
 	}
+
+	public override void Attack(string action){
+		string animation = availableActions[action];
+		if (animation == null)
+			return;
+		CMS.Ability abilityInformations =  GetAbilityInformations(action);
+		abilityInformations.name = animation;
+		player.ChangeState(new InAirHitState(player, inAirInfos, abilityInformations));
+		return;
+	}
 }
 
 public struct InAirInfos {
@@ -45,4 +55,5 @@ public struct InAirInfos {
 		this.canDash = canDash;
 		this.direction = direction;
 	}
+	
 }
