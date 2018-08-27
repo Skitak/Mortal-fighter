@@ -45,6 +45,14 @@ public class InAirState : PlayerState {
 		player.ChangeState(new InAirHitState(player, inAirInfos, abilityInformations));
 		return;
 	}
+
+	public override void Jump(Vector3 direction){
+		Dash(direction);
+	}
+	public override void Dash(Vector3 direction){
+		if (inAirInfos.canDash)
+			player.ChangeState(new DashState(player, direction));
+	}
 }
 
 public struct InAirInfos {

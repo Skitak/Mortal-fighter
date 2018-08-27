@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public abstract class PlayerState {
 
@@ -27,9 +28,14 @@ public abstract class PlayerState {
 	}
 
 	public virtual void Attack(string action){
-		string animation = availableActions[action];
-		if (animation == null)
+		string animation;
+		try{
+			animation = availableActions[action];
+		}
+		catch (NullReferenceException e){
+
 			return;
+		}
 		CMS.Ability abilityInformations =  GetAbilityInformations(action);
 		abilityInformations.name = animation;
 		player.ChangeState(new HitState(player, abilityInformations));
@@ -53,9 +59,10 @@ public abstract class PlayerState {
 	public virtual void Crouch(){
 	}
 
-	public virtual void Jump(float direction){}
+	public virtual void Jump(Vector3 direction){}
 
 	public virtual void Stand(){}
 	public virtual void Block(){}
 	public virtual void Unblock(){}
+	public virtual void Dash(Vector3 direction){}
 }

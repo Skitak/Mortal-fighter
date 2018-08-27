@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class JumpState : PlayerState {
 	int frameStartup, frameTotal;
-	float apex, direction;
+	float apex;
+	Vector3 direction;
 	InAirInfos inAirInfos;
  	public override void Update() {
 		if (--frameStartup == 0){
@@ -13,27 +14,25 @@ public class JumpState : PlayerState {
 		}
  	}
 
-	public JumpState (BasicPlayer player, float direction) : base(player){
+	public JumpState (BasicPlayer player, Vector3 direction) : base(player){
 		this.direction = direction;
 	}
 
 	public override void Enter(){
 		FetchCMSInformations();
-		Vector3 moveDirection = new Vector3(direction * player.speed, apex, 0);
+		Vector3 moveDirection = new Vector3(direction.x * player.speed, apex, 0);
 		inAirInfos = new InAirInfos(moveDirection, true);
 		player.animator.SetTrigger("jump");
 	}
 
 	private void FetchCMSInformations(){
 		// Jump height, and other things
-		double value;
-		player.CmsInfos.movements.TryGetValue("jump height apex", out value);
-		// apex = (float) value;
-		apex = 11f;
-		player.CmsInfos.movements.TryGetValue("jump frames startup", out value);
-		frameStartup = Mathf.RoundToInt((float) value);
-		player.CmsInfos.movements.TryGetValue("jump frames total", out value);
-		frameTotal = Mathf.RoundToInt((float) value);
+		apex = (float) player.CmsInfos.movements["jump height apex"];
+		 Debug.Log(apex);
+		frameStartup = Mathf.RoundToInt((float) player.CmsInfos.movements["jump frames startup"]);
+		 Debug.Log(frameStartup);
+		frameTotal = Mathf.RoundToInt((float) player.CmsInfos.movements["jump frames total"]);
+		 Debug.Log(frameTotal);
 	}	
 
 	public override void Exit(){

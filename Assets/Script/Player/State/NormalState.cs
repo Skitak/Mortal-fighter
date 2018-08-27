@@ -38,7 +38,11 @@ public class NormalState : PlayerState {
 		player.ChangeState(new CrouchState(player));
 	}
 
-	public override void Jump(float direction){
+	public override void Jump(Vector3 direction){
 		player.ChangeState(new JumpState(player, direction));
+	}
+
+	public override void Dash(Vector3 direction){
+		player.ChangeState(new DashState(player, direction));
 	}
 }

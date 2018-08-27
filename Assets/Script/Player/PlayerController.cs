@@ -33,8 +33,8 @@ public class PlayerController : MonoBehaviour {
 			player.Move(xAxisValue);
 		else
 			player.animator.SetFloat("move", 0f);
-		if (yAxisValue > 0)
-			player.Jump(xAxisValue);
+		if (Input.GetButtonDown(vertical) && yAxisValue > 0)
+			player.Jump(new Vector3(xAxisValue, yAxisValue));
 		else if (yAxisValue < 0)
 			player.Crouch();
 		else 

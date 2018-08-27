@@ -27,7 +27,7 @@ public class CSVFileReader : MonoBehaviour
 
 	private static int fetchCMSMovements(CMS cms){
 		string[] lines = cms.File.text.Split("\n"[0]);
-		string[] ignoredLines = {"jump frames total","dash forward total frames" };
+		string[] ignoredLines = {};
 		string endMovements = "core move set";
 		// Debug.Log("Récupération des variables de mouvement --------------------------------");
 		int i = 1;
