@@ -24,7 +24,6 @@ public class CrouchBlockState : BlockState {
 	}
 
 	public override void Exit(){
-		player.animator.SetBool("crouch", false);
 		if (isAlreadyBlocking)
 			return;
 		player.animator.SetBool("block", false);
@@ -33,6 +32,7 @@ public class CrouchBlockState : BlockState {
 
 	public override void Stand(){
 		isAlreadyBlocking = true;
+		player.animator.SetBool("crouch", false);
 		player.ChangeState(new BlockState(player));
 	}
 

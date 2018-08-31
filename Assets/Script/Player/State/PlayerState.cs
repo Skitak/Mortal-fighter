@@ -24,7 +24,7 @@ public abstract class PlayerState {
 	public virtual void Damaged(int damages, int hitStun){
 		player.Health -= damages;
 		if (player.Health > 0)
-			player.ChangeState(new StunState(player, hitStun));
+			player.ChangeState(new StunState(player, hitStun, "damaged"));
 	}
 
 	public virtual void Attack(string action){
@@ -63,6 +63,8 @@ public abstract class PlayerState {
 
 	public virtual void Stand(){}
 	public virtual void Block(){}
+	public virtual void Blocked(){}
 	public virtual void Unblock(){}
+	public virtual void Feint(){}
 	public virtual void Dash(Vector3 direction){}
 }

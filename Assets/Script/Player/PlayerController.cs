@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour {
 
 	public BasicPlayer player;
 	public int controllerNumber = 1;
-	string horizontal, vertical, block;
+	string horizontal, vertical, block, feint;
 	string[] actions = {
 		"heavy normal",
 		"light normal",
@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour {
 		horizontal = "horizontal " + controllerNumber;
 		vertical = "vertical " + controllerNumber;
 		block = "block " + controllerNumber;
+		feint = "feint " + controllerNumber;
 	}
 	// Update is called once per frame
 	void Update () {
@@ -52,5 +53,5 @@ public class PlayerController : MonoBehaviour {
 			player.Block();
 		else if (Input.GetButtonUp(block))
 			player.Unblock();
-	}
+	}	
 }

@@ -55,6 +55,7 @@ public class BlockState : PlayerState {
 		}
 		else{
 			Debug.Log("Blocked mathafaka");
+			player.other.GetComponent<BasicPlayer>().Blocked();
 		}
 	}
 

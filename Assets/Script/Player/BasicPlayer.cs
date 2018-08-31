@@ -7,19 +7,15 @@ using System.Linq;
 public class BasicPlayer : MonoBehaviour {
 
 	private PlayerState state;
-	public Slider healthSlider;
-	public Slider blockSlider;
+	public Slider healthSlider, blockSlider;
 	public Animator animator;
 	public CharacterController controller;
 	public DamagingCollider damagingCollider;
+	public InAirMobility inAirMobility;
 	public GameObject other;
 	public TextAsset cmsTextAsset;
-	public float maxBlockTime;
-	public float freeBlockTime;
-	public float blockRecoveringBufferTime;
-	public Timer freeBlockTimer;
-	public Timer blockBufferTimer;
-	public Timer blockTimer;
+	public float freeBlockTime, blockRecoveringBufferTime, maxBlockTime;
+	public Timer freeBlockTimer, blockBufferTimer, blockTimer;
 	public float speed;
 	private int health;
 	public int Health{
@@ -62,11 +58,9 @@ public class BasicPlayer : MonoBehaviour {
 		blockBufferTimer = new Timer(blockRecoveringBufferTime, delegate (){
 			blockTimer.IsReversed = true;
 			blockTimer.Play();
-			// Debug.Log("Blocking bar is recharging");
 		});
 
 		blockTimer = new Timer(maxBlockTime, delegate(){
-			Debug.Log("Blocking bar is empty");
 			Debug.Log(blockTimer.IsFinished());
 			this.ChangeState(new NormalState(this));
 		});
@@ -77,7 +71,6 @@ public class BasicPlayer : MonoBehaviour {
 		
 		freeBlockTimer = new Timer(freeBlockTime, delegate(){
 			blockTimer.IsReversed = false;
-			// Debug.Log("Free blocking bar is empty");
 			blockTimer.Play();
 		});
 	}
@@ -88,7 +81,9 @@ public class BasicPlayer : MonoBehaviour {
 	protected void Update () { state.Update();}
 	public void Attack(string action){ state.Attack(action); }
 	public void Block(){ state.Block(); }
+	public void Blocked(){ state.Blocked(); }
 	public void Unblock(){ state.Unblock(); }
+	public void Feint(){ state.Feint();	}
 	public void Move(float axisValue){ state.Move(axisValue); }
 	public void Crouch(){ state.Crouch(); }
 	public void Stand(){ state.Stand();	}

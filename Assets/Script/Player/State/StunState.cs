@@ -5,16 +5,18 @@ using UnityEngine;
 public class StunState : PlayerState {
 
 	private int stunLeft = 0;
-	public StunState (BasicPlayer player, int hitstun) : base(player){
+	private string action; 
+	public StunState (BasicPlayer player, int hitstun, string action) : base(player){
 		stunLeft = hitstun;
+		this.action = action;
 	}
 
 	public override void Enter(){
-		player.animator.SetBool("damaged", true);
+		player.animator.SetBool(action, true);
 	}
 
 	public override void Exit(){
-		player.animator.SetBool("damaged", false);
+		player.animator.SetBool(action, false);
 	}
 
 	public override void Update() {

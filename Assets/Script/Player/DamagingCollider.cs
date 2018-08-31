@@ -4,7 +4,6 @@ using UnityEngine;
 using System.Linq; 
 
 public class DamagingCollider : MonoBehaviour {
-
 	Dictionary<string, int> priorities = new Dictionary<string, int>() {
 		{"throw standing", 1},
 		{"throw mid-air", 2},
@@ -27,17 +26,18 @@ public class DamagingCollider : MonoBehaviour {
 		prioritiesExceptions.Add("anti-air", 
 		new string[]{ "heavy normal mid-air", "light normal mid-air"});		
 	}
+
+	public BoxCollider boxCollider;
 	public BasicPlayer player;
 	int damages;
 	int hitStun;
 	string action;
+
 	private void OnTriggerEnter(Collider other) {
 		if (other.transform.IsChildOf(player.transform))
 			return;
 		if (other.tag == "damagingHitbox")
 			other.gameObject.GetComponent<DamagingCollider>().Hit(damages,hitStun, action);	
-		else if (other.tag == "blockingHitbox") // should call some other function
-			other.gameObject.GetComponent<BasicPlayer>().Hit(damages,hitStun, action);
 		else if (other.tag == "Player")
 			other.gameObject.GetComponent<BasicPlayer>().Hit(damages,hitStun, action);
 
@@ -74,9 +74,10 @@ public class DamagingCollider : MonoBehaviour {
 			return true;
 		return false;
 	}
-	public void ChangeHitInformations(int damages, int hitStun, string action){
-		this.damages = damages;
-		this.hitStun = hitStun;
-		this.action = action;
+	public void ChangeHitInformations(CMS.Ability ability){
+		this.damages =  Mathf.RoundToInt((float) ability.informations["damage"]);
+		this.hitStun = Mathf.RoundToInt((float) ability.informations["hit stun"]);
+		this.action = ability.name;
 	}
+
 }

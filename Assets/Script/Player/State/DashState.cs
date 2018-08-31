@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DashState : PlayerState {
-	InAirInfos inAirInfos;
 	Vector3 direction;
 	bool isGrounded = false;
 	bool isDashing = false;
@@ -12,32 +11,21 @@ public class DashState : PlayerState {
 	int recoverFrames = 0;
  	public override void Update(){
 		if (--startupFrames == 0){
-			inAirInfos.direction = direction * player.speed;
-			isDashing = true;
+			player.inAirMobility.direction = direction * player.speed;
+			player.inAirMobility.useGravity = false;
 		}
 		else if (startupFrames < 0 && --totalFrames == 0)
-			isDashing = false;
+			player.inAirMobility.useGravity = true;
 		else if (totalFrames < 0 && recoverFrames-- == 0)
-			player.ChangeState(new InAirState(player, inAirInfos));
+			player.ChangeState(new InAirState(player));
 		if (player.controller.isGrounded)
 			isGrounded = true;
-     	fly();
 	}
 
 	public DashState (BasicPlayer player, Vector3 direction) : base(player){
 		this.direction = direction;
-		inAirInfos.canDash = false;
-		inAirInfos.direction = Vector3.zero;
-	}
-	public DashState (BasicPlayer player, Vector3 direction, InAirInfos inAirInfos) : base(player){
-		this.direction = direction;
-		this.inAirInfos = inAirInfos;
-		this.inAirInfos.canDash = false;
-	}
-	void fly(){
-		player.controller.Move(Vector3.up * Time.deltaTime);
-		inAirInfos.direction.y -= isDashing ? 0 : InAirState.gravity * Time.deltaTime;
-		player.controller.Move(inAirInfos.direction* Time.deltaTime);
+		player.inAirMobility.canDash = false;
+		player.inAirMobility.direction = Vector3.zero;
 	}
 
 	public override void Enter(){
