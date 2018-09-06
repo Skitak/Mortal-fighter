@@ -16,7 +16,7 @@ public class BasicPlayer : MonoBehaviour {
 	public TextAsset cmsTextAsset;
 	public float freeBlockTime, blockRecoveringBufferTime, maxBlockTime;
 	public Timer freeBlockTimer, blockBufferTimer, blockTimer;
-	public float speed;
+	public float speed, dashSpeed;
 	private int health;
 	public int Health{
 		get{return health;}

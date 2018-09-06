@@ -1564,6 +1564,12 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 2018232134}
   m_Script: {fileID: 11500000, guid: f250e0a7f8a214745a184520e2d3906a, type: 3}
+--- !u!114 &1030460933 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114206016788509170, guid: 672ce63c2aee3524f8c2452aec9c99e3,
+    type: 2}
+  m_PrefabInternal: {fileID: 2018232134}
+  m_Script: {fileID: 11500000, guid: d01a1beeb30fcb840987c23ae4a8cd3b, type: 3}
 --- !u!1 &1242165559
 GameObject:
   m_ObjectHideFlags: 0
@@ -2367,10 +2373,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 9
       objectReference: {fileID: 0}
-    - target: {fileID: 1924161145957270, guid: 672ce63c2aee3524f8c2452aec9c99e3, type: 2}
-      propertyPath: m_Name
-      value: Proto Player 1
-      objectReference: {fileID: 0}
     - target: {fileID: 114400414420887020, guid: 672ce63c2aee3524f8c2452aec9c99e3,
         type: 2}
       propertyPath: healthSlider
@@ -2386,6 +2388,15 @@ Prefab:
       propertyPath: other
       value: 
       objectReference: {fileID: 1030460929}
+    - target: {fileID: 1924161145957270, guid: 672ce63c2aee3524f8c2452aec9c99e3, type: 2}
+      propertyPath: m_Name
+      value: Proto Player 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114400414420887020, guid: 672ce63c2aee3524f8c2452aec9c99e3,
+        type: 2}
+      propertyPath: dashSpeed
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672ce63c2aee3524f8c2452aec9c99e3, type: 2}
   m_IsPrefabAsset: 0
@@ -3052,7 +3063,7 @@ Prefab:
         type: 2}
       propertyPath: inAirMobility
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1030460933}
     - target: {fileID: 114131766583010886, guid: 672ce63c2aee3524f8c2452aec9c99e3,
         type: 2}
       propertyPath: boxCollider
@@ -3067,6 +3078,66 @@ Prefab:
         type: 2}
       propertyPath: controllerNumber
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 224662534547828132, guid: 672ce63c2aee3524f8c2452aec9c99e3,
+        type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224662534547828132, guid: 672ce63c2aee3524f8c2452aec9c99e3,
+        type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224662534547828132, guid: 672ce63c2aee3524f8c2452aec9c99e3,
+        type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224662534547828132, guid: 672ce63c2aee3524f8c2452aec9c99e3,
+        type: 2}
+      propertyPath: m_LocalScale.x
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 224662534547828132, guid: 672ce63c2aee3524f8c2452aec9c99e3,
+        type: 2}
+      propertyPath: m_LocalScale.y
+      value: 0.005
+      objectReference: {fileID: 0}
+    - target: {fileID: 224662534547828132, guid: 672ce63c2aee3524f8c2452aec9c99e3,
+        type: 2}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 224662534547828132, guid: 672ce63c2aee3524f8c2452aec9c99e3,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224662534547828132, guid: 672ce63c2aee3524f8c2452aec9c99e3,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 224662534547828132, guid: 672ce63c2aee3524f8c2452aec9c99e3,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 224662534547828132, guid: 672ce63c2aee3524f8c2452aec9c99e3,
+        type: 2}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 224662534547828132, guid: 672ce63c2aee3524f8c2452aec9c99e3,
+        type: 2}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114400414420887020, guid: 672ce63c2aee3524f8c2452aec9c99e3,
+        type: 2}
+      propertyPath: dashSpeed
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}

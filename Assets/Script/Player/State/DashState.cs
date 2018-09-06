@@ -11,7 +11,7 @@ public class DashState : PlayerState {
 	int recoverFrames = 0;
  	public override void Update(){
 		if (--startupFrames == 0){
-			player.inAirMobility.direction = direction * player.speed;
+			player.inAirMobility.direction = direction * player.dashSpeed;
 			player.inAirMobility.useGravity = false;
 		}
 		else if (startupFrames < 0 && --totalFrames == 0)
